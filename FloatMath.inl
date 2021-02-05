@@ -72,15 +72,15 @@
 void fm_inverseRT(const REAL matrix[16],const REAL pos[3],REAL t[3]) // inverse rotate translate the point.
 {
 
-	REAL _x = pos[0] - matrix[3*4+0];
-	REAL _y = pos[1] - matrix[3*4+1];
-	REAL _z = pos[2] - matrix[3*4+2];
+  REAL _x = pos[0] - matrix[3*4+0];
+  REAL _y = pos[1] - matrix[3*4+1];
+  REAL _z = pos[2] - matrix[3*4+2];
 
-	// Multiply inverse-translated source vector by inverted rotation transform
+  // Multiply inverse-translated source vector by inverted rotation transform
 
-	t[0] = (matrix[0*4+0] * _x) + (matrix[0*4+1] * _y) + (matrix[0*4+2] * _z);
-	t[1] = (matrix[1*4+0] * _x) + (matrix[1*4+1] * _y) + (matrix[1*4+2] * _z);
-	t[2] = (matrix[2*4+0] * _x) + (matrix[2*4+1] * _y) + (matrix[2*4+2] * _z);
+  t[0] = (matrix[0*4+0] * _x) + (matrix[0*4+1] * _y) + (matrix[0*4+2] * _z);
+  t[1] = (matrix[1*4+0] * _x) + (matrix[1*4+1] * _y) + (matrix[1*4+2] * _z);
+  t[2] = (matrix[2*4+0] * _x) + (matrix[2*4+1] * _y) + (matrix[2*4+2] * _z);
 
 }
 
@@ -92,17 +92,17 @@ REAL fm_getDeterminant(const REAL matrix[16])
   REAL p2[3];
 
 
-	p0[0] = matrix[0*4+0];
-	p0[1] = matrix[0*4+1];
-	p0[2] = matrix[0*4+2];
+  p0[0] = matrix[0*4+0];
+  p0[1] = matrix[0*4+1];
+  p0[2] = matrix[0*4+2];
 
-	p1[0] = matrix[1*4+0];
-	p1[1] = matrix[1*4+1];
-	p1[2] = matrix[1*4+2];
+  p1[0] = matrix[1*4+0];
+  p1[1] = matrix[1*4+1];
+  p1[2] = matrix[1*4+2];
 
-	p2[0] = matrix[2*4+0];
-	p2[1] = matrix[2*4+1];
-	p2[2] = matrix[2*4+2];
+  p2[0] = matrix[2*4+0];
+  p2[1] = matrix[2*4+1];
+  p2[2] = matrix[2*4+2];
 
   fm_cross(tempv,p1,p2);
 
@@ -148,68 +148,68 @@ void fm_decomposeTransform(const REAL local_transform[16],REAL trans[3],REAL rot
 
 void fm_getSubMatrix(int ki,int kj,REAL pDst[16],const REAL matrix[16])
 {
-	int row, col;
-	int dstCol = 0, dstRow = 0;
+  int row, col;
+  int dstCol = 0, dstRow = 0;
 
-	for ( col = 0; col < 4; col++ )
-	{
-		if ( col == kj )
-		{
-			continue;
-		}
-		for ( dstRow = 0, row = 0; row < 4; row++ )
-		{
-			if ( row == ki )
-			{
-				continue;
-			}
-			pDst[dstCol*4+dstRow] = matrix[col*4+row];
-			dstRow++;
-		}
-		dstCol++;
-	}
+  for ( col = 0; col < 4; col++ )
+  {
+    if ( col == kj )
+    {
+      continue;
+    }
+    for ( dstRow = 0, row = 0; row < 4; row++ )
+    {
+      if ( row == ki )
+      {
+        continue;
+      }
+      pDst[dstCol*4+dstRow] = matrix[col*4+row];
+      dstRow++;
+    }
+    dstCol++;
+  }
 }
 
 void  fm_inverseTransform(const REAL matrix[16],REAL inverse_matrix[16])
 {
-	REAL determinant = fm_getDeterminant(matrix);
-	determinant = 1.0f / determinant;
-	for (int i = 0; i < 4; i++ )
-	{
-		for (int j = 0; j < 4; j++ )
-		{
-			int sign = 1 - ( ( i + j ) % 2 ) * 2;
-			REAL subMat[16];
+  REAL determinant = fm_getDeterminant(matrix);
+  determinant = 1.0f / determinant;
+  for (int i = 0; i < 4; i++ )
+  {
+    for (int j = 0; j < 4; j++ )
+    {
+      int sign = 1 - ( ( i + j ) % 2 ) * 2;
+      REAL subMat[16];
       fm_identity(subMat);
-			fm_getSubMatrix( i, j, subMat, matrix );
-			REAL subDeterminant = fm_getDeterminant(subMat);
-			inverse_matrix[i*4+j] = ( subDeterminant * sign ) * determinant;
-		}
-	}
+      fm_getSubMatrix( i, j, subMat, matrix );
+      REAL subDeterminant = fm_getDeterminant(subMat);
+      inverse_matrix[i*4+j] = ( subDeterminant * sign ) * determinant;
+    }
+  }
 }
 
 void fm_identity(REAL matrix[16]) // set 4x4 matrix to identity.
 {
-	matrix[0*4+0] = 1;
-	matrix[1*4+1] = 1;
-	matrix[2*4+2] = 1;
-	matrix[3*4+3] = 1;
+  matrix[0*4+0] = 1;
+  matrix[1*4+1] = 1;
+  matrix[2*4+2] = 1;
+  matrix[3*4+3] = 1;
 
-	matrix[1*4+0] = 0;
-	matrix[2*4+0] = 0;
-	matrix[3*4+0] = 0;
+  matrix[1*4+0] = 0;
+  matrix[2*4+0] = 0;
+  matrix[3*4+0] = 0;
 
-	matrix[0*4+1] = 0;
-	matrix[2*4+1] = 0;
-	matrix[3*4+1] = 0;
+  matrix[0*4+1] = 0;
+  matrix[2*4+1] = 0;
+  matrix[3*4+1] = 0;
 
-	matrix[0*4+2] = 0;
-	matrix[1*4+2] = 0;
-	matrix[3*4+2] = 0;
+  matrix[0*4+2] = 0;
+  matrix[1*4+2] = 0;
+  matrix[3*4+2] = 0;
 
-	matrix[0*4+3] = 0;
-	matrix[1*4+3] = 0;
-	matrix[2*4+3] = 0;
+  matrix[0*4+3] = 0;
+  matrix[1*4+3] = 0;
+  matrix[2*4+3] = 0;
 
 }
 
@@ -220,36 +220,36 @@ void  fm_quatToEuler(const REAL quat[4],REAL &ax,REAL &ay,REAL &az)
   REAL z = quat[2];
   REAL w = quat[3];
 
-	REAL sint	     = (2.0f * w * y) - (2.0f * x * z);
-	REAL cost_temp = 1.0f - (sint * sint);
-	REAL cost	   	 = 0;
+  REAL sint      = (2.0f * w * y) - (2.0f * x * z);
+  REAL cost_temp = 1.0f - (sint * sint);
+  REAL cost      = 0;
 
-	if ( (REAL)fabs(cost_temp) > 0.001f )
-	{
-		cost = sqrt( cost_temp );
-	}
+  if ( (REAL)fabs(cost_temp) > 0.001f )
+  {
+    cost = sqrt( cost_temp );
+  }
 
-	REAL sinv, cosv, sinf, cosf;
-	if ( (REAL)fabs(cost) > 0.001f )
-	{
+  REAL sinv, cosv, sinf, cosf;
+  if ( (REAL)fabs(cost) > 0.001f )
+  {
     cost = 1.0f / cost;
-		sinv = ((2.0f * y * z) + (2.0f * w * x)) * cost;
-		cosv = (1.0f - (2.0f * x * x) - (2.0f * y * y)) * cost;
-		sinf = ((2.0f * x * y) + (2.0f * w * z)) * cost;
-		cosf = (1.0f - (2.0f * y * y) - (2.0f * z * z)) * cost;
-	}
-	else
-	{
-		sinv = (2.0f * w * x) - (2.0f * y * z);
-		cosv = 1.0f - (2.0f * x * x) - (2.0f * z * z);
-		sinf = 0;
-		cosf = 1.0f;
-	}
+    sinv = ((2.0f * y * z) + (2.0f * w * x)) * cost;
+    cosv = (1.0f - (2.0f * x * x) - (2.0f * y * y)) * cost;
+    sinf = ((2.0f * x * y) + (2.0f * w * z)) * cost;
+    cosf = (1.0f - (2.0f * y * y) - (2.0f * z * z)) * cost;
+  }
+  else
+  {
+    sinv = (2.0f * w * x) - (2.0f * y * z);
+    cosv = 1.0f - (2.0f * x * x) - (2.0f * z * z);
+    sinf = 0;
+    cosf = 1.0f;
+  }
 
-	// compute output rotations
-	ax	= atan2( sinv, cosv );
-	ay	= atan2( sint, cost );
-  az	= atan2( sinf, cosf );
+  // compute output rotations
+  ax  = atan2( sinv, cosv );
+  ay  = atan2( sint, cost );
+  az  = atan2( sinf, cosf );
 
 }
 
@@ -265,27 +265,27 @@ void fm_getAABB(size_t vcount,const REAL *points,size_t pstride,REAL *bmin,REAL 
 
   const unsigned char *source = (const unsigned char *) points;
 
-	bmin[0] = points[0];
-	bmin[1] = points[1];
-	bmin[2] = points[2];
+  bmin[0] = points[0];
+  bmin[1] = points[1];
+  bmin[2] = points[2];
 
-	bmax[0] = points[0];
-	bmax[1] = points[1];
-	bmax[2] = points[2];
+  bmax[0] = points[0];
+  bmax[1] = points[1];
+  bmax[2] = points[2];
 
 
   for (size_t i=1; i<vcount; i++)
   {
-  	source+=pstride;
-  	const REAL *p = (const REAL *) source;
+    source+=pstride;
+    const REAL *p = (const REAL *) source;
 
-  	if ( p[0] < bmin[0] ) bmin[0] = p[0];
-  	if ( p[1] < bmin[1] ) bmin[1] = p[1];
-  	if ( p[2] < bmin[2] ) bmin[2] = p[2];
+    if ( p[0] < bmin[0] ) bmin[0] = p[0];
+    if ( p[1] < bmin[1] ) bmin[1] = p[1];
+    if ( p[2] < bmin[2] ) bmin[2] = p[2];
 
-		if ( p[0] > bmax[0] ) bmax[0] = p[0];
-		if ( p[1] > bmax[1] ) bmax[1] = p[1];
-		if ( p[2] > bmax[2] ) bmax[2] = p[2];
+    if ( p[0] > bmax[0] ) bmax[0] = p[0];
+    if ( p[1] > bmax[1] ) bmax[1] = p[1];
+    if ( p[2] > bmax[2] ) bmax[2] = p[2];
 
   }
 }
@@ -297,57 +297,57 @@ void  fm_eulerToQuat(const REAL *euler,REAL *quat) // convert euler angles to qu
 
 void fm_eulerToQuat(REAL roll,REAL pitch,REAL yaw,REAL *quat) // convert euler angles to quaternion.
 {
-	roll  *= 0.5f;
-	pitch *= 0.5f;
-	yaw   *= 0.5f;
+  roll  *= 0.5f;
+  pitch *= 0.5f;
+  yaw   *= 0.5f;
 
-	REAL cr = cos(roll);
-	REAL cp = cos(pitch);
-	REAL cy = cos(yaw);
+  REAL cr = cos(roll);
+  REAL cp = cos(pitch);
+  REAL cy = cos(yaw);
 
-	REAL sr = sin(roll);
-	REAL sp = sin(pitch);
-	REAL sy = sin(yaw);
+  REAL sr = sin(roll);
+  REAL sp = sin(pitch);
+  REAL sy = sin(yaw);
 
-	REAL cpcy = cp * cy;
-	REAL spsy = sp * sy;
-	REAL spcy = sp * cy;
-	REAL cpsy = cp * sy;
+  REAL cpcy = cp * cy;
+  REAL spsy = sp * sy;
+  REAL spcy = sp * cy;
+  REAL cpsy = cp * sy;
 
-	quat[0]   = ( sr * cpcy - cr * spsy);
-	quat[1]   = ( cr * spcy + sr * cpsy);
-	quat[2]   = ( cr * cpsy - sr * spcy);
-	quat[3]   = cr * cpcy + sr * spsy;
+  quat[0]   = ( sr * cpcy - cr * spsy);
+  quat[1]   = ( cr * spcy + sr * cpsy);
+  quat[2]   = ( cr * cpsy - sr * spcy);
+  quat[3]   = cr * cpcy + sr * spsy;
 }
 
 void fm_quatToMatrix(const REAL *quat,REAL *matrix) // convert quaterinion rotation to matrix, zeros out the translation component.
 {
 
-	REAL xx = quat[0]*quat[0];
-	REAL yy = quat[1]*quat[1];
-	REAL zz = quat[2]*quat[2];
-	REAL xy = quat[0]*quat[1];
-	REAL xz = quat[0]*quat[2];
-	REAL yz = quat[1]*quat[2];
-	REAL wx = quat[3]*quat[0];
-	REAL wy = quat[3]*quat[1];
-	REAL wz = quat[3]*quat[2];
+  REAL xx = quat[0]*quat[0];
+  REAL yy = quat[1]*quat[1];
+  REAL zz = quat[2]*quat[2];
+  REAL xy = quat[0]*quat[1];
+  REAL xz = quat[0]*quat[2];
+  REAL yz = quat[1]*quat[2];
+  REAL wx = quat[3]*quat[0];
+  REAL wy = quat[3]*quat[1];
+  REAL wz = quat[3]*quat[2];
 
-	matrix[0*4+0] = 1 - 2 * ( yy + zz );
-	matrix[1*4+0] =     2 * ( xy - wz );
-	matrix[2*4+0] =     2 * ( xz + wy );
+  matrix[0*4+0] = 1 - 2 * ( yy + zz );
+  matrix[1*4+0] =     2 * ( xy - wz );
+  matrix[2*4+0] =     2 * ( xz + wy );
 
-	matrix[0*4+1] =     2 * ( xy + wz );
-	matrix[1*4+1] = 1 - 2 * ( xx + zz );
-	matrix[2*4+1] =     2 * ( yz - wx );
+  matrix[0*4+1] =     2 * ( xy + wz );
+  matrix[1*4+1] = 1 - 2 * ( xx + zz );
+  matrix[2*4+1] =     2 * ( yz - wx );
 
-	matrix[0*4+2] =     2 * ( xz - wy );
-	matrix[1*4+2] =     2 * ( yz + wx );
-	matrix[2*4+2] = 1 - 2 * ( xx + yy );
+  matrix[0*4+2] =     2 * ( xz - wy );
+  matrix[1*4+2] =     2 * ( yz + wx );
+  matrix[2*4+2] = 1 - 2 * ( xx + yy );
 
-	matrix[3*4+0] = matrix[3*4+1] = matrix[3*4+2] = (REAL) 0.0f;
-	matrix[0*4+3] = matrix[1*4+3] = matrix[2*4+3] = (REAL) 0.0f;
-	matrix[3*4+3] =(REAL) 1.0f;
+  matrix[3*4+0] = matrix[3*4+1] = matrix[3*4+2] = (REAL) 0.0f;
+  matrix[0*4+3] = matrix[1*4+3] = matrix[2*4+3] = (REAL) 0.0f;
+  matrix[3*4+3] =(REAL) 1.0f;
 
 }
 
@@ -356,71 +356,71 @@ void fm_quatRotate(const REAL *quat,const REAL *v,REAL *r) // rotate a vector di
 {
   REAL left[4];
 
-	left[0] =   quat[3]*v[0] + quat[1]*v[2] - v[1]*quat[2];
-	left[1] =   quat[3]*v[1] + quat[2]*v[0] - v[2]*quat[0];
-	left[2] =   quat[3]*v[2] + quat[0]*v[1] - v[0]*quat[1];
-	left[3] = - quat[0]*v[0] - quat[1]*v[1] - quat[2]*v[2];
+  left[0] =   quat[3]*v[0] + quat[1]*v[2] - v[1]*quat[2];
+  left[1] =   quat[3]*v[1] + quat[2]*v[0] - v[2]*quat[0];
+  left[2] =   quat[3]*v[2] + quat[0]*v[1] - v[0]*quat[1];
+  left[3] = - quat[0]*v[0] - quat[1]*v[1] - quat[2]*v[2];
 
-	r[0] = (left[3]*-quat[0]) + (quat[3]*left[0]) + (left[1]*-quat[2]) - (-quat[1]*left[2]);
-	r[1] = (left[3]*-quat[1]) + (quat[3]*left[1]) + (left[2]*-quat[0]) - (-quat[2]*left[0]);
-	r[2] = (left[3]*-quat[2]) + (quat[3]*left[2]) + (left[0]*-quat[1]) - (-quat[0]*left[1]);
+  r[0] = (left[3]*-quat[0]) + (quat[3]*left[0]) + (left[1]*-quat[2]) - (-quat[1]*left[2]);
+  r[1] = (left[3]*-quat[1]) + (quat[3]*left[1]) + (left[2]*-quat[0]) - (-quat[2]*left[0]);
+  r[2] = (left[3]*-quat[2]) + (quat[3]*left[2]) + (left[0]*-quat[1]) - (-quat[0]*left[1]);
 
 }
 
 
 void fm_getTranslation(const REAL *matrix,REAL *t)
 {
-	t[0] = matrix[3*4+0];
-	t[1] = matrix[3*4+1];
-	t[2] = matrix[3*4+2];
+  t[0] = matrix[3*4+0];
+  t[1] = matrix[3*4+1];
+  t[2] = matrix[3*4+2];
 }
 
 void fm_matrixToQuat(const REAL *matrix,REAL *quat) // convert the 3x3 portion of a 4x4 matrix into a quaterion as x,y,z,w
 {
 
-	REAL tr = matrix[0*4+0] + matrix[1*4+1] + matrix[2*4+2];
+  REAL tr = matrix[0*4+0] + matrix[1*4+1] + matrix[2*4+2];
 
-	// check the diagonal
+  // check the diagonal
 
-	if (tr > 0.0f )
-	{
-		REAL s = (REAL) sqrt ( (double) (tr + 1.0f) );
-		quat[3] = s * 0.5f;
-		s = 0.5f / s;
-		quat[0] = (matrix[1*4+2] - matrix[2*4+1]) * s;
-		quat[1] = (matrix[2*4+0] - matrix[0*4+2]) * s;
-		quat[2] = (matrix[0*4+1] - matrix[1*4+0]) * s;
+  if (tr > 0.0f )
+  {
+    REAL s = (REAL) sqrt ( (double) (tr + 1.0f) );
+    quat[3] = s * 0.5f;
+    s = 0.5f / s;
+    quat[0] = (matrix[1*4+2] - matrix[2*4+1]) * s;
+    quat[1] = (matrix[2*4+0] - matrix[0*4+2]) * s;
+    quat[2] = (matrix[0*4+1] - matrix[1*4+0]) * s;
 
-	}
-	else
-	{
-		// diagonal is negative
-		int nxt[3] = {1, 2, 0};
-		REAL  qa[4];
+  }
+  else
+  {
+    // diagonal is negative
+    int nxt[3] = {1, 2, 0};
+    REAL  qa[4];
 
-		int i = 0;
+    int i = 0;
 
-		if (matrix[1*4+1] > matrix[0*4+0]) i = 1;
-		if (matrix[2*4+2] > matrix[i*4+i]) i = 2;
+    if (matrix[1*4+1] > matrix[0*4+0]) i = 1;
+    if (matrix[2*4+2] > matrix[i*4+i]) i = 2;
 
-		int j = nxt[i];
-		int k = nxt[j];
+    int j = nxt[i];
+    int k = nxt[j];
 
-		REAL s = sqrt ( ((matrix[i*4+i] - (matrix[j*4+j] + matrix[k*4+k])) + 1.0f) );
+    REAL s = sqrt ( ((matrix[i*4+i] - (matrix[j*4+j] + matrix[k*4+k])) + 1.0f) );
 
-		qa[i] = s * 0.5f;
+    qa[i] = s * 0.5f;
 
-		if (s != 0.0f ) s = 0.5f / s;
+    if (s != 0.0f ) s = 0.5f / s;
 
-		qa[3] = (matrix[j*4+k] - matrix[k*4+j]) * s;
-		qa[j] = (matrix[i*4+j] + matrix[j*4+i]) * s;
-		qa[k] = (matrix[i*4+k] + matrix[k*4+i]) * s;
+    qa[3] = (matrix[j*4+k] - matrix[k*4+j]) * s;
+    qa[j] = (matrix[i*4+j] + matrix[j*4+i]) * s;
+    qa[k] = (matrix[i*4+k] + matrix[k*4+i]) * s;
 
-		quat[0] = qa[0];
-		quat[1] = qa[1];
-		quat[2] = qa[2];
-		quat[3] = qa[3];
-	}
+    quat[0] = qa[0];
+    quat[1] = qa[1];
+    quat[2] = qa[2];
+    quat[3] = qa[3];
+  }
 
 
 }
@@ -428,24 +428,24 @@ void fm_matrixToQuat(const REAL *matrix,REAL *quat) // convert the 3x3 portion o
 
 REAL fm_sphereVolume(REAL radius) // return's the volume of a sphere of this radius (4/3 PI * R cubed )
 {
-	return (4.0f / 3.0f ) * FM_PI * radius * radius * radius;
+  return (4.0f / 3.0f ) * FM_PI * radius * radius * radius;
 }
 
 
 REAL fm_cylinderVolume(REAL radius,REAL h)
 {
-	return FM_PI * radius * radius *h;
+  return FM_PI * radius * radius *h;
 }
 
 REAL fm_capsuleVolume(REAL radius,REAL h)
 {
-	REAL volume = fm_sphereVolume(radius); // volume of the sphere portion.
-	REAL ch = h-radius*2; // this is the cylinder length
-	if ( ch > 0 )
-	{
-		volume+=fm_cylinderVolume(radius,ch);
-	}
-	return volume;
+  REAL volume = fm_sphereVolume(radius); // volume of the sphere portion.
+  REAL ch = h-radius*2; // this is the cylinder length
+  if ( ch > 0 )
+  {
+    volume+=fm_cylinderVolume(radius,ch);
+  }
+  return volume;
 }
 
 void  fm_transform(const REAL matrix[16],const REAL v[3],REAL t[3]) // rotate and translate this point
@@ -489,69 +489,69 @@ void  fm_rotate(const REAL matrix[16],const REAL v[3],REAL t[3]) // rotate and t
 
 REAL fm_distance(const REAL *p1,const REAL *p2)
 {
-	REAL dx = p1[0] - p2[0];
-	REAL dy = p1[1] - p2[1];
-	REAL dz = p1[2] - p2[2];
+  REAL dx = p1[0] - p2[0];
+  REAL dy = p1[1] - p2[1];
+  REAL dz = p1[2] - p2[2];
 
-	return sqrt( dx*dx + dy*dy + dz *dz );
+  return sqrt( dx*dx + dy*dy + dz *dz );
 }
 
 REAL fm_distanceSquared(const REAL *p1,const REAL *p2)
 {
-	REAL dx = p1[0] - p2[0];
-	REAL dy = p1[1] - p2[1];
-	REAL dz = p1[2] - p2[2];
+  REAL dx = p1[0] - p2[0];
+  REAL dy = p1[1] - p2[1];
+  REAL dz = p1[2] - p2[2];
 
-	return dx*dx + dy*dy + dz *dz;
+  return dx*dx + dy*dy + dz *dz;
 }
 
 
 REAL fm_distanceSquaredXZ(const REAL *p1,const REAL *p2)
 {
-	REAL dx = p1[0] - p2[0];
-	REAL dz = p1[2] - p2[2];
+  REAL dx = p1[0] - p2[0];
+  REAL dz = p1[2] - p2[2];
 
-	return dx*dx +  dz *dz;
+  return dx*dx +  dz *dz;
 }
 
 
 REAL fm_computePlane(const REAL *A,const REAL *B,const REAL *C,REAL *n) // returns D
 {
-	REAL vx = (B[0] - C[0]);
-	REAL vy = (B[1] - C[1]);
-	REAL vz = (B[2] - C[2]);
+  REAL vx = (B[0] - C[0]);
+  REAL vy = (B[1] - C[1]);
+  REAL vz = (B[2] - C[2]);
 
-	REAL wx = (A[0] - B[0]);
-	REAL wy = (A[1] - B[1]);
-	REAL wz = (A[2] - B[2]);
+  REAL wx = (A[0] - B[0]);
+  REAL wy = (A[1] - B[1]);
+  REAL wz = (A[2] - B[2]);
 
-	REAL vw_x = vy * wz - vz * wy;
-	REAL vw_y = vz * wx - vx * wz;
-	REAL vw_z = vx * wy - vy * wx;
+  REAL vw_x = vy * wz - vz * wy;
+  REAL vw_y = vz * wx - vx * wz;
+  REAL vw_z = vx * wy - vy * wx;
 
-	REAL mag = sqrt((vw_x * vw_x) + (vw_y * vw_y) + (vw_z * vw_z));
+  REAL mag = sqrt((vw_x * vw_x) + (vw_y * vw_y) + (vw_z * vw_z));
 
-	if ( mag < 0.000001f )
-	{
-		mag = 0;
-	}
-	else
-	{
-		mag = 1.0f/mag;
-	}
+  if ( mag < 0.000001f )
+  {
+    mag = 0;
+  }
+  else
+  {
+    mag = 1.0f/mag;
+  }
 
-	REAL x = vw_x * mag;
-	REAL y = vw_y * mag;
-	REAL z = vw_z * mag;
+  REAL x = vw_x * mag;
+  REAL y = vw_y * mag;
+  REAL z = vw_z * mag;
 
 
-	REAL D = 0.0f - ((x*A[0])+(y*A[1])+(z*A[2]));
+  REAL D = 0.0f - ((x*A[0])+(y*A[1])+(z*A[2]));
 
   n[0] = x;
   n[1] = y;
   n[2] = z;
 
-	return D;
+  return D;
 }
 
 REAL fm_distToPlane(const REAL *plane,const REAL *p) // computes the distance of this point from the plane.
@@ -566,9 +566,9 @@ REAL fm_dot(const REAL *p1,const REAL *p2)
 
 void fm_cross(REAL *cross,const REAL *a,const REAL *b)
 {
-	cross[0] = a[1]*b[2] - a[2]*b[1];
-	cross[1] = a[2]*b[0] - a[0]*b[2];
-	cross[2] = a[0]*b[1] - a[1]*b[0];
+  cross[0] = a[1]*b[2] - a[2]*b[1];
+  cross[1] = a[2]*b[0] - a[0]*b[2];
+  cross[2] = a[0]*b[1] - a[1]*b[0];
 }
 
 void fm_computeNormalVector(REAL *n,const REAL *p1,const REAL *p2)
@@ -672,11 +672,11 @@ void  fm_matrixMultiply(const REAL *pA,const REAL *pB,REAL *pM)
 
 
 #else
-	memset(pM, 0, sizeof(REAL)*16);
-	for(int i=0; i<4; i++ )
-		for(int j=0; j<4; j++ )
-			for(int k=0; k<4; k++ )
-				pM[4*i+j] +=  pA[4*i+k] * pB[4*k+j];
+  memset(pM, 0, sizeof(REAL)*16);
+  for(int i=0; i<4; i++ )
+    for(int j=0; j<4; j++ )
+      for(int k=0; k<4; k++ )
+        pM[4*i+j] +=  pA[4*i+k] * pB[4*k+j];
 #endif
 }
 
@@ -1153,15 +1153,15 @@ bool fm_raySphereIntersect(const REAL *center,REAL radius,const REAL *pos,const 
   }
 
 
-	REAL v = DOT(E0,V);
+  REAL v = DOT(E0,V);
 
-	REAL disc = radius2 - (dist2 - v*v);
+  REAL disc = radius2 - (dist2 - v*v);
 
-	if (disc > 0.0f)
-	{
-		if ( intersect )
-		{
-		  REAL d = sqrt(disc);
+  if (disc > 0.0f)
+  {
+    if ( intersect )
+    {
+      REAL d = sqrt(disc);
       REAL diff = v-d;
       if ( diff < distance )
       {
@@ -1171,9 +1171,9 @@ bool fm_raySphereIntersect(const REAL *center,REAL radius,const REAL *pos,const 
         ret = true;
       }
     }
-	}
+  }
 
-	return ret;
+  return ret;
 }
 
 
@@ -1802,7 +1802,7 @@ PlaneTriResult fm_getSidePlane(const REAL *p,const REAL *plane,REAL epsilon)
   if ( d < -epsilon || d > epsilon )
   {
     if ( d > 0 )
-  		ret =  PTR_FRONT; // it is 'in front' within the provided epsilon value.
+      ret =  PTR_FRONT; // it is 'in front' within the provided epsilon value.
     else
       ret = PTR_BACK;
   }
@@ -1906,7 +1906,7 @@ public:
       {
         if (sideA < 0)
         {
-  			  point<Type> v;
+          point<Type> v;
           fm_intersectPointPlane(&ptB.x, &ptA.x, &v.x, &part->normal.x );
           outpts[out_c++] = inpts[in_c++] = v;
         }
@@ -1949,7 +1949,7 @@ static inline void add(const REAL *p,REAL *dest,size_t tstride,size_t &pcount)
   dest[1] = p[1];
   dest[2] = p[2];
   pcount++;
-	assert( pcount <= 4 );
+  assert( pcount <= 4 );
 }
 
 
@@ -2176,8 +2176,8 @@ void fm_computeBestFitOBB(size_t vcount,const REAL *points,size_t pstride,REAL *
 
 void fm_computeBestFitABB(size_t vcount,const REAL *points,size_t pstride,REAL *sides,REAL *pos)
 {
-	REAL bmin[3];
-	REAL bmax[3];
+  REAL bmin[3];
+  REAL bmax[3];
 
   bmin[0] = points[0];
   bmin[1] = points[1];
@@ -2187,30 +2187,30 @@ void fm_computeBestFitABB(size_t vcount,const REAL *points,size_t pstride,REAL *
   bmax[1] = points[1];
   bmax[2] = points[2];
 
-	const char *cp = (const char *) points;
-	for (size_t i=0; i<vcount; i++)
-	{
-		const REAL *p = (const REAL *) cp;
+  const char *cp = (const char *) points;
+  for (size_t i=0; i<vcount; i++)
+  {
+    const REAL *p = (const REAL *) cp;
 
-		if ( p[0] < bmin[0] ) bmin[0] = p[0];
-		if ( p[1] < bmin[1] ) bmin[1] = p[1];
-		if ( p[2] < bmin[2] ) bmin[2] = p[2];
+    if ( p[0] < bmin[0] ) bmin[0] = p[0];
+    if ( p[1] < bmin[1] ) bmin[1] = p[1];
+    if ( p[2] < bmin[2] ) bmin[2] = p[2];
 
     if ( p[0] > bmax[0] ) bmax[0] = p[0];
     if ( p[1] > bmax[1] ) bmax[1] = p[1];
     if ( p[2] > bmax[2] ) bmax[2] = p[2];
 
     cp+=pstride;
-	}
+  }
 
 
-	sides[0] = bmax[0] - bmin[0];
-	sides[1] = bmax[1] - bmin[1];
-	sides[2] = bmax[2] - bmin[2];
+  sides[0] = bmax[0] - bmin[0];
+  sides[1] = bmax[1] - bmin[1];
+  sides[2] = bmax[2] - bmin[2];
 
-	pos[0] = bmin[0]+sides[0]*0.5f;
-	pos[1] = bmin[1]+sides[1]*0.5f;
-	pos[2] = bmin[2]+sides[2]*0.5f;
+  pos[0] = bmin[0]+sides[0]*0.5f;
+  pos[1] = bmin[1]+sides[1]*0.5f;
+  pos[2] = bmin[2]+sides[2]*0.5f;
 
 }
 
@@ -2309,7 +2309,7 @@ public:
     mRight = 0;
   };
 
-	~KdTreeNode(void)
+  ~KdTreeNode(void)
   {
   }
 
@@ -2459,7 +2459,7 @@ public:
        {
          search1 = mRight; // JWR  ok, we go down the left tree
          if ( dx < radius ) // JWR  if the distance from the right is less than our search radius
-	  			search2 = mLeft;
+          search2 = mLeft;
         }
         axis = Y_AXIS;
         break;
@@ -2468,13 +2468,13 @@ public:
         {
           search1 = mLeft;
           if ( -dy < radius )
-    				search2 = mRight;
+            search2 = mRight;
         }
         else
         {
           search1 = mRight;
           if ( dy < radius )
-    				search2 = mLeft;
+            search2 = mLeft;
         }
         axis = Z_AXIS;
         break;
@@ -2483,13 +2483,13 @@ public:
         {
           search1 = mLeft;
           if ( -dz < radius )
-    				search2 = mRight;
+            search2 = mRight;
         }
         else
         {
           search1 = mRight;
           if ( dz < radius )
-    				search2 = mLeft;
+            search2 = mLeft;
         }
         axis = X_AXIS;
         break;
@@ -2566,10 +2566,10 @@ public:
 
 
     if ( search1 )
-  		search1->search( axis, pos,radius, count, maxObjects, found, iface);
+      search1->search( axis, pos,radius, count, maxObjects, found, iface);
 
     if ( search2 )
-	  	search2->search( axis, pos,radius, count, maxObjects, found, iface);
+      search2->search( axis, pos,radius, count, maxObjects, found, iface);
 
   }
 
@@ -2598,7 +2598,7 @@ public:
        {
          search1 = mRight; // JWR  ok, we go down the left tree
          if ( dx < radius ) // JWR  if the distance from the right is less than our search radius
-	  			search2 = mLeft;
+          search2 = mLeft;
         }
         axis = Y_AXIS;
         break;
@@ -2607,13 +2607,13 @@ public:
         {
           search1 = mLeft;
           if ( -dy < radius )
-    				search2 = mRight;
+            search2 = mRight;
         }
         else
         {
           search1 = mRight;
           if ( dy < radius )
-    				search2 = mLeft;
+            search2 = mLeft;
         }
         axis = Z_AXIS;
         break;
@@ -2622,13 +2622,13 @@ public:
         {
           search1 = mLeft;
           if ( -dz < radius )
-    				search2 = mRight;
+            search2 = mRight;
         }
         else
         {
           search1 = mRight;
           if ( dz < radius )
-    				search2 = mLeft;
+            search2 = mLeft;
         }
         axis = X_AXIS;
         break;
@@ -2705,10 +2705,10 @@ public:
 
 
     if ( search1 )
-  		search1->search( axis, pos,radius, count, maxObjects, found, iface);
+      search1->search( axis, pos,radius, count, maxObjects, found, iface);
 
     if ( search2 )
-	  	search2->search( axis, pos,radius, count, maxObjects, found, iface);
+      search2->search( axis, pos,radius, count, maxObjects, found, iface);
 
   }
 
@@ -2717,8 +2717,8 @@ private:
   void setLeft(KdTreeNode *left) { mLeft = left; };
   void setRight(KdTreeNode *right) { mRight = right; };
 
-	KdTreeNode *getLeft(void)         { return mLeft; }
-	KdTreeNode *getRight(void)        { return mRight; }
+  KdTreeNode *getLeft(void)         { return mLeft; }
+  KdTreeNode *getRight(void)        { return mRight; }
 
   size_t          mIndex;
   KdTreeNode     *mLeft;
@@ -2793,7 +2793,7 @@ public:
   size_t search(const double *pos,double radius,size_t maxObjects,KdTreeFindNode *found) const
   {
     assert( mUseDouble );
-    if ( !mRoot )	return 0;
+    if ( !mRoot ) return 0;
     size_t count = 0;
     mRoot->search(X_AXIS,pos,radius,count,maxObjects,found,this);
     return count;
@@ -2802,7 +2802,7 @@ public:
   size_t search(const float *pos,float radius,size_t maxObjects,KdTreeFindNode *found) const
   {
     assert( !mUseDouble );
-    if ( !mRoot )	return 0;
+    if ( !mRoot ) return 0;
     size_t count = 0;
     mRoot->search(X_AXIS,pos,radius,count,maxObjects,found,this);
     return count;
@@ -3222,112 +3222,112 @@ void          fm_releaseVertexIndex(fm_VertexIndex *vindex)
 class fm_quickSort
 {
 public:
-	void qsort(void **base,int num); // perform the qsort.
+  void qsort(void **base,int num); // perform the qsort.
 protected:
   // -1 less, 0 equal, +1 greater.
-	virtual int compare(void **p1,void **p2) = 0;
+  virtual int compare(void **p1,void **p2) = 0;
 private:
-	void inline swap(char **a,char **b);
+  void inline swap(char **a,char **b);
 };
 
 
 void fm_quickSort::swap(char **a,char **b)
 {
-	char *tmp;
+  char *tmp;
 
-	if ( a != b )
-	{
-		tmp = *a;
-		*a++ = *b;
-		*b++ = tmp;
-	}
+  if ( a != b )
+  {
+    tmp = *a;
+    *a++ = *b;
+    *b++ = tmp;
+  }
 }
 
 
 void fm_quickSort::qsort(void **b,int num)
 {
-	char *lo,*hi;
-	char *mid;
-	char *bottom, *top;
-	int size;
-	char *lostk[30], *histk[30];
-	int stkptr;
-	char **base = (char **)b;
+  char *lo,*hi;
+  char *mid;
+  char *bottom, *top;
+  int size;
+  char *lostk[30], *histk[30];
+  int stkptr;
+  char **base = (char **)b;
 
-	if (num < 2 ) return;
+  if (num < 2 ) return;
 
-	stkptr = 0;
+  stkptr = 0;
 
-	lo = (char *)base;
-	hi = (char *)base + sizeof(char **) * (num-1);
+  lo = (char *)base;
+  hi = (char *)base + sizeof(char **) * (num-1);
 
 nextone:
 
-	size = (int)(hi - lo) / sizeof(char**) + 1;
+  size = (int)(hi - lo) / sizeof(char**) + 1;
 
-	mid = lo + (size / 2) * sizeof(char **);
-	swap((char **)mid,(char **)lo);
-	bottom = lo;
-	top = hi + sizeof(char **);
+  mid = lo + (size / 2) * sizeof(char **);
+  swap((char **)mid,(char **)lo);
+  bottom = lo;
+  top = hi + sizeof(char **);
 
-	for (;;)
-	{
-		do
-		{
-			bottom += sizeof(char **);
-		} while (bottom <= hi && compare((void **)bottom,(void **)lo) <= 0);
+  for (;;)
+  {
+    do
+    {
+      bottom += sizeof(char **);
+    } while (bottom <= hi && compare((void **)bottom,(void **)lo) <= 0);
 
-		do
-		{
-			top -= sizeof(char **);
-		} while (top > lo && compare((void **)top,(void **)lo) >= 0);
+    do
+    {
+      top -= sizeof(char **);
+    } while (top > lo && compare((void **)top,(void **)lo) >= 0);
 
-		if (top < bottom) break;
+    if (top < bottom) break;
 
-		swap((char **)bottom,(char **)top);
+    swap((char **)bottom,(char **)top);
 
-	}
+  }
 
-	swap((char **)lo,(char **)top);
+  swap((char **)lo,(char **)top);
 
-	if ( top - 1 - lo >= hi - bottom )
-	{
-		if (lo + sizeof(char **) < top)
-		{
-			lostk[stkptr] = lo;
-			histk[stkptr] = top - sizeof(char **);
-			stkptr++;
-		}
-		if (bottom < hi)
-		{
-			lo = bottom;
-			goto nextone;
-		}
-	}
-	else
-	{
-		if ( bottom < hi )
-		{
-			lostk[stkptr] = bottom;
-			histk[stkptr] = hi;
-			stkptr++;
-		}
-		if (lo + sizeof(char **) < top)
-		{
-			hi = top - sizeof(char **);
-			goto nextone; 					/* do small recursion */
-		}
-	}
+  if ( top - 1 - lo >= hi - bottom )
+  {
+    if (lo + sizeof(char **) < top)
+    {
+      lostk[stkptr] = lo;
+      histk[stkptr] = top - sizeof(char **);
+      stkptr++;
+    }
+    if (bottom < hi)
+    {
+      lo = bottom;
+      goto nextone;
+    }
+  }
+  else
+  {
+    if ( bottom < hi )
+    {
+      lostk[stkptr] = bottom;
+      histk[stkptr] = hi;
+      stkptr++;
+    }
+    if (lo + sizeof(char **) < top)
+    {
+      hi = top - sizeof(char **);
+      goto nextone;           /* do small recursion */
+    }
+  }
 
-	stkptr--;
+  stkptr--;
 
-	if (stkptr >= 0)
-	{
-		lo = lostk[stkptr];
-		hi = histk[stkptr];
-		goto nextone;
-	}
-	return;
+  if (stkptr >= 0)
+  {
+    lo = lostk[stkptr];
+    hi = histk[stkptr];
+    goto nextone;
+  }
+  return;
 }
 
 
@@ -3647,7 +3647,7 @@ public:
     return ret;
   }
 
-	int compare(void **p1,void **p2)
+  int compare(void **p1,void **p2)
   {
     int ret = 0;
 
@@ -4035,27 +4035,27 @@ REAL fm_computeBestFitAABB(size_t vcount,const REAL *points,size_t pstride,REAL 
 
   const unsigned char *source = (const unsigned char *) points;
 
-	bmin[0] = points[0];
-	bmin[1] = points[1];
-	bmin[2] = points[2];
+  bmin[0] = points[0];
+  bmin[1] = points[1];
+  bmin[2] = points[2];
 
-	bmax[0] = points[0];
-	bmax[1] = points[1];
-	bmax[2] = points[2];
+  bmax[0] = points[0];
+  bmax[1] = points[1];
+  bmax[2] = points[2];
 
 
   for (size_t i=1; i<vcount; i++)
   {
-  	source+=pstride;
-  	const REAL *p = (const REAL *) source;
+    source+=pstride;
+    const REAL *p = (const REAL *) source;
 
-  	if ( p[0] < bmin[0] ) bmin[0] = p[0];
-  	if ( p[1] < bmin[1] ) bmin[1] = p[1];
-  	if ( p[2] < bmin[2] ) bmin[2] = p[2];
+    if ( p[0] < bmin[0] ) bmin[0] = p[0];
+    if ( p[1] < bmin[1] ) bmin[1] = p[1];
+    if ( p[2] < bmin[2] ) bmin[2] = p[2];
 
-		if ( p[0] > bmax[0] ) bmax[0] = p[0];
-		if ( p[1] > bmax[1] ) bmax[1] = p[1];
-		if ( p[2] > bmax[2] ) bmax[2] = p[2];
+    if ( p[0] > bmax[0] ) bmax[0] = p[0];
+    if ( p[1] > bmax[1] ) bmax[1] = p[1];
+    if ( p[2] > bmax[2] ) bmax[2] = p[2];
 
   }
 
@@ -4063,7 +4063,7 @@ REAL fm_computeBestFitAABB(size_t vcount,const REAL *points,size_t pstride,REAL 
   REAL dy = bmax[1] - bmin[1];
   REAL dz = bmax[2] - bmin[2];
 
-	return (REAL) sqrt( dx*dx + dy*dy + dz*dz );
+  return (REAL) sqrt( dx*dx + dy*dy + dz*dz );
 
 }
 
@@ -4071,26 +4071,26 @@ REAL fm_computeBestFitAABB(size_t vcount,const REAL *points,size_t pstride,REAL 
 
 /* a = b - c */
 #define vector(a,b,c) \
-	(a)[0] = (b)[0] - (c)[0];	\
-	(a)[1] = (b)[1] - (c)[1];	\
-	(a)[2] = (b)[2] - (c)[2];
+  (a)[0] = (b)[0] - (c)[0]; \
+  (a)[1] = (b)[1] - (c)[1]; \
+  (a)[2] = (b)[2] - (c)[2];
 
 
 
 #define innerProduct(v,q) \
-		((v)[0] * (q)[0] + \
-		(v)[1] * (q)[1] + \
-		(v)[2] * (q)[2])
+    ((v)[0] * (q)[0] + \
+    (v)[1] * (q)[1] + \
+    (v)[2] * (q)[2])
 
 #define crossProduct(a,b,c) \
-	(a)[0] = (b)[1] * (c)[2] - (c)[1] * (b)[2]; \
-	(a)[1] = (b)[2] * (c)[0] - (c)[2] * (b)[0]; \
-	(a)[2] = (b)[0] * (c)[1] - (c)[0] * (b)[1];
+  (a)[0] = (b)[1] * (c)[2] - (c)[1] * (b)[2]; \
+  (a)[1] = (b)[2] * (c)[0] - (c)[2] * (b)[0]; \
+  (a)[2] = (b)[0] * (c)[1] - (c)[0] * (b)[1];
 
 
 bool fm_lineIntersectsTriangle(const REAL *rayStart,const REAL *rayEnd,const REAL *p1,const REAL *p2,const REAL *p3,REAL *sect)
 {
-	REAL dir[3];
+  REAL dir[3];
 
   dir[0] = rayEnd[0] - rayStart[0];
   dir[1] = rayEnd[1] - rayStart[1];
@@ -4106,21 +4106,21 @@ bool fm_lineIntersectsTriangle(const REAL *rayStart,const REAL *rayEnd,const REA
 
   REAL t;
 
-	bool ret = fm_rayIntersectsTriangle(rayStart, dir, p1, p2, p3, t );
+  bool ret = fm_rayIntersectsTriangle(rayStart, dir, p1, p2, p3, t );
 
-	if ( ret )
-	{
-		if ( t > d )
-		{
-			sect[0] = rayStart[0] + dir[0]*t;
-			sect[1] = rayStart[1] + dir[1]*t;
-			sect[2] = rayStart[2] + dir[2]*t;
-		}
-		else
-		{
-			ret = false;
-		}
-	}
+  if ( ret )
+  {
+    if ( t > d )
+    {
+      sect[0] = rayStart[0] + dir[0]*t;
+      sect[1] = rayStart[1] + dir[1]*t;
+      sect[2] = rayStart[2] + dir[2]*t;
+    }
+    else
+    {
+      ret = false;
+    }
+  }
 
   return ret;
 }
@@ -4129,36 +4129,36 @@ bool fm_lineIntersectsTriangle(const REAL *rayStart,const REAL *rayEnd,const REA
 
 bool fm_rayIntersectsTriangle(const REAL *p,const REAL *d,const REAL *v0,const REAL *v1,const REAL *v2,REAL &t)
 {
-	REAL e1[3],e2[3],h[3],s[3],q[3];
-	REAL a,f,u,v;
+  REAL e1[3],e2[3],h[3],s[3],q[3];
+  REAL a,f,u,v;
 
-	vector(e1,v1,v0);
-	vector(e2,v2,v0);
-	crossProduct(h,d,e2);
-	a = innerProduct(e1,h);
+  vector(e1,v1,v0);
+  vector(e2,v2,v0);
+  crossProduct(h,d,e2);
+  a = innerProduct(e1,h);
 
-	if (a > -0.00001 && a < 0.00001)
-		return(false);
+  if (a > -0.00001 && a < 0.00001)
+    return(false);
 
-	f = 1/a;
-	vector(s,p,v0);
-	u = f * (innerProduct(s,h));
+  f = 1/a;
+  vector(s,p,v0);
+  u = f * (innerProduct(s,h));
 
-	if (u < 0.0 || u > 1.0)
-		return(false);
+  if (u < 0.0 || u > 1.0)
+    return(false);
 
-	crossProduct(q,s,e1);
-	v = f * innerProduct(d,q);
-	if (v < 0.0 || u + v > 1.0)
-		return(false);
-	// at this stage we can compute t to find out where
-	// the intersection point is on the line
-	t = f * innerProduct(e2,q);
-	if (t > 0) // ray intersection
-		return(true);
-	else // this means that there is a line intersection
-		 // but not a ray intersection
-		 return (false);
+  crossProduct(q,s,e1);
+  v = f * innerProduct(d,q);
+  if (v < 0.0 || u + v > 1.0)
+    return(false);
+  // at this stage we can compute t to find out where
+  // the intersection point is on the line
+  t = f * innerProduct(e2,q);
+  if (t > 0) // ray intersection
+    return(true);
+  else // this means that there is a line intersection
+     // but not a ray intersection
+     return (false);
 }
 
 
@@ -4170,20 +4170,20 @@ inline REAL det(const REAL *p1,const REAL *p2,const REAL *p3)
 
 REAL  fm_computeMeshVolume(const REAL *vertices,size_t tcount,const unsigned int *indices)
 {
-	REAL volume = 0;
+  REAL volume = 0;
 
-	for (unsigned int i=0; i<tcount; i++,indices+=3)
-	{
-  	const REAL *p1 = &vertices[ indices[0]*3 ];
-		const REAL *p2 = &vertices[ indices[1]*3 ];
-		const REAL *p3 = &vertices[ indices[2]*3 ];
-		volume+=det(p1,p2,p3); // compute the volume of the tetrahedran relative to the origin.
-	}
+  for (unsigned int i=0; i<tcount; i++,indices+=3)
+  {
+    const REAL *p1 = &vertices[ indices[0]*3 ];
+    const REAL *p2 = &vertices[ indices[1]*3 ];
+    const REAL *p3 = &vertices[ indices[2]*3 ];
+    volume+=det(p1,p2,p3); // compute the volume of the tetrahedran relative to the origin.
+  }
 
-	volume*=(1.0f/6.0f);
-	if ( volume < 0 )
-		volume*=-1;
-	return volume;
+  volume*=(1.0f/6.0f);
+  if ( volume < 0 )
+    volume*=-1;
+  return volume;
 }
 
 
@@ -4341,19 +4341,19 @@ public:
     mMax[2] = bmax[2];
   }
 
-	void SetMin(T x,T y,T z)
-	{
-		mMin[0] = x;
-		mMin[1] = y;
-		mMin[2] = z;
-	}
+  void SetMin(T x,T y,T z)
+  {
+    mMin[0] = x;
+    mMin[1] = y;
+    mMin[2] = z;
+  }
 
-	void SetMax(T x,T y,T z)
-	{
-		mMax[0] = x;
-		mMax[1] = y;
-		mMax[2] = z;
-	}
+  void SetMax(T x,T y,T z)
+  {
+    mMax[0] = x;
+    mMax[1] = y;
+    mMax[2] = z;
+  }
 
   T mMin[3];
   T mMax[3];
@@ -4362,38 +4362,38 @@ public:
 #endif
 
 void splitRect(unsigned int axis,
-						   const Rect3d<REAL> &source,
-							 Rect3d<REAL> &b1,
-							 Rect3d<REAL> &b2,
-							 const REAL *midpoint)
+               const Rect3d<REAL> &source,
+               Rect3d<REAL> &b1,
+               Rect3d<REAL> &b2,
+               const REAL *midpoint)
 {
-	switch ( axis )
-	{
-		case 0:
-			b1.SetMin(source.mMin);
-			b1.SetMax( midpoint[0], source.mMax[1], source.mMax[2] );
+  switch ( axis )
+  {
+    case 0:
+      b1.SetMin(source.mMin);
+      b1.SetMax( midpoint[0], source.mMax[1], source.mMax[2] );
 
-			b2.SetMin( midpoint[0], source.mMin[1], source.mMin[2] );
-			b2.SetMax(source.mMax);
+      b2.SetMin( midpoint[0], source.mMin[1], source.mMin[2] );
+      b2.SetMax(source.mMax);
 
-			break;
-		case 1:
-			b1.SetMin(source.mMin);
-			b1.SetMax( source.mMax[0], midpoint[1], source.mMax[2] );
+      break;
+    case 1:
+      b1.SetMin(source.mMin);
+      b1.SetMax( source.mMax[0], midpoint[1], source.mMax[2] );
 
-			b2.SetMin( source.mMin[0], midpoint[1], source.mMin[2] );
-			b2.SetMax(source.mMax);
+      b2.SetMin( source.mMin[0], midpoint[1], source.mMin[2] );
+      b2.SetMax(source.mMax);
 
-			break;
-		case 2:
-			b1.SetMin(source.mMin);
-			b1.SetMax( source.mMax[0], source.mMax[1], midpoint[2] );
+      break;
+    case 2:
+      b1.SetMin(source.mMin);
+      b1.SetMax( source.mMax[0], source.mMax[1], midpoint[2] );
 
-			b2.SetMin( source.mMin[0], source.mMin[1], midpoint[2] );
-			b2.SetMax(source.mMax);
+      b2.SetMin( source.mMin[0], source.mMin[1], midpoint[2] );
+      b2.SetMax(source.mMax);
 
-			break;
-	}
+      break;
+  }
 }
 
 bool fm_computeSplitPlane(unsigned int vcount,
@@ -4425,21 +4425,21 @@ bool fm_computeSplitPlane(unsigned int vcount,
   REAL dz = sides[2];
 
 
-	REAL laxis = dx;
+  REAL laxis = dx;
 
-	unsigned int axis = 0;
+  unsigned int axis = 0;
 
-	if ( dy > dx )
-	{
-		axis = 1;
-		laxis = dy;
-	}
+  if ( dy > dx )
+  {
+    axis = 1;
+    laxis = dy;
+  }
 
-	if ( dz > dx && dz > dy )
-	{
-		axis = 2;
-		laxis = dz;
-	}
+  if ( dz > dx && dz > dy )
+  {
+    axis = 2;
+    laxis = dz;
+  }
 
   REAL p1[3];
   REAL p2[3];
@@ -4516,7 +4516,7 @@ bool fm_computeSplitPlane(unsigned int vcount,
   fm_transform(matrix,p2,tp2);
   fm_transform(matrix,p3,tp3);
 
-	plane[3] = fm_computePlane(tp1,tp2,tp3,plane);
+  plane[3] = fm_computePlane(tp1,tp2,tp3,plane);
 
   return true;
 
@@ -4531,15 +4531,15 @@ void fm_nearestPointInTriangle(const REAL *nearestPoint,const REAL *p1,const REA
 
 static REAL Partial(const REAL *a,const REAL *p) 
 {
-	return (a[0]*p[1]) - (p[0]*a[1]);
+  return (a[0]*p[1]) - (p[0]*a[1]);
 }
 
 REAL  fm_areaTriangle(const REAL *p0,const REAL *p1,const REAL *p2)
 {
   REAL A = Partial(p0,p1);
-	A+= Partial(p1,p2);
-	A+= Partial(p2,p0);
-	return A*0.5f;
+  A+= Partial(p1,p2);
+  A+= Partial(p2,p0);
+  return A*0.5f;
 }
 
 void fm_subtract(const REAL *A,const REAL *B,REAL *diff) // compute A-B and store the result in 'diff'
@@ -4784,62 +4784,62 @@ public:
 
   void tesselate(const float *p1,const float *p2,const float *p3,size_t recurse)
   {
-  	bool split = false;
-  	float l1,l2,l3;
+    bool split = false;
+    float l1,l2,l3;
 
     l1 = l2 = l3 = 0;
 
-  	if ( recurse < mMaxDepth )
-  	{
-  	  l1 = fm_distanceSquared(p1,p2);
-    	l2 = fm_distanceSquared(p2,p3);
-    	l3 = fm_distanceSquared(p3,p1);
+    if ( recurse < mMaxDepth )
+    {
+      l1 = fm_distanceSquared(p1,p2);
+      l2 = fm_distanceSquared(p2,p3);
+      l3 = fm_distanceSquared(p3,p1);
 
-  	  if (  l1 > mLongEdge || l2 > mLongEdge || l3 > mLongEdge )
-  	  	split = true;
+      if (  l1 > mLongEdge || l2 > mLongEdge || l3 > mLongEdge )
+        split = true;
 
     }
 
     if ( split )
-  	{
-  		size_t edge;
+    {
+      size_t edge;
 
-  		if ( l1 >= l2 && l1 >= l3 )
-  			edge = 0;
-  		else if ( l2 >= l1 && l2 >= l3 )
-  			edge = 1;
-  		else
-  			edge = 2;
+      if ( l1 >= l2 && l1 >= l3 )
+        edge = 0;
+      else if ( l2 >= l1 && l2 >= l3 )
+        edge = 1;
+      else
+        edge = 2;
 
-			float split[3];
+      float split[3];
 
-  		switch ( edge )
-  		{
-  			case 0:
-  				{
+      switch ( edge )
+      {
+        case 0:
+          {
             fm_lerp(p1,p2,split,0.5f);
             tesselate(p1,split,p3, recurse+1 );
             tesselate(split,p2,p3, recurse+1 );
-  				}
-  				break;
-  			case 1:
-  				{
+          }
+          break;
+        case 1:
+          {
             fm_lerp(p2,p3,split,0.5f);
             tesselate(p1,p2,split, recurse+1 );
             tesselate(p1,split,p3, recurse+1 );
-  				}
-  				break;
-  			case 2:
-  				{
-  					fm_lerp(p3,p1,split,0.5f);
+          }
+          break;
+        case 2:
+          {
+            fm_lerp(p3,p1,split,0.5f);
             tesselate(p1,p2,split, recurse+1 );
             tesselate(split,p2,p3, recurse+1 );
-  				}
-  				break;
-  		}
-  	}
-  	else
-  	{
+          }
+          break;
+      }
+    }
+    else
+    {
       bool newp;
 
       size_t i1 = mVertices->getIndex(p1,newp);
@@ -4855,62 +4855,62 @@ public:
 
   void tesselate(const double *p1,const double *p2,const double *p3,size_t recurse)
   {
-  	bool split = false;
-  	double l1,l2,l3;
+    bool split = false;
+    double l1,l2,l3;
 
     l1 = l2 = l3 = 0;
 
-  	if ( recurse < mMaxDepth )
-  	{
-  	  l1 = fm_distanceSquared(p1,p2);
-    	l2 = fm_distanceSquared(p2,p3);
-    	l3 = fm_distanceSquared(p3,p1);
+    if ( recurse < mMaxDepth )
+    {
+      l1 = fm_distanceSquared(p1,p2);
+      l2 = fm_distanceSquared(p2,p3);
+      l3 = fm_distanceSquared(p3,p1);
 
-  	  if (  l1 > mLongEdgeD || l2 > mLongEdgeD || l3 > mLongEdgeD )
-  	  	split = true;
+      if (  l1 > mLongEdgeD || l2 > mLongEdgeD || l3 > mLongEdgeD )
+        split = true;
 
     }
 
     if ( split )
-  	{
-  		size_t edge;
+    {
+      size_t edge;
 
-  		if ( l1 >= l2 && l1 >= l3 )
-  			edge = 0;
-  		else if ( l2 >= l1 && l2 >= l3 )
-  			edge = 1;
-  		else
-  			edge = 2;
+      if ( l1 >= l2 && l1 >= l3 )
+        edge = 0;
+      else if ( l2 >= l1 && l2 >= l3 )
+        edge = 1;
+      else
+        edge = 2;
 
-			double split[3];
+      double split[3];
 
-  		switch ( edge )
-  		{
-  			case 0:
-  				{
+      switch ( edge )
+      {
+        case 0:
+          {
             fm_lerp(p1,p2,split,0.5);
             tesselate(p1,split,p3, recurse+1 );
             tesselate(split,p2,p3, recurse+1 );
-  				}
-  				break;
-  			case 1:
-  				{
+          }
+          break;
+        case 1:
+          {
             fm_lerp(p2,p3,split,0.5);
             tesselate(p1,p2,split, recurse+1 );
             tesselate(p1,split,p3, recurse+1 );
-  				}
-  				break;
-  			case 2:
-  				{
-  					fm_lerp(p3,p1,split,0.5);
+          }
+          break;
+        case 2:
+          {
+            fm_lerp(p3,p1,split,0.5);
             tesselate(p1,p2,split, recurse+1 );
             tesselate(split,p2,p3, recurse+1 );
-  				}
-  				break;
-  		}
-  	}
-  	else
-  	{
+          }
+          break;
+      }
+    }
+    else
+    {
       bool newp;
 
       size_t i1 = mVertices->getIndex(p1,newp);
@@ -4952,28 +4952,28 @@ void           fm_releaseTesselate(fm_Tesselate *t)
 #define RAY_ABB_INTERSECT
 
 //! Integer representation of a floating-point value.
-#define IR(x)	((unsigned int&)x)
+#define IR(x) ((unsigned int&)x)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
-*	A method to compute a ray-AABB intersection.
-*	Original code by Andrew Woo, from "Graphics Gems", Academic Press, 1990
-*	Optimized code by Pierre Terdiman, 2000 (~20-30% faster on my Celeron 500)
-*	Epsilon value added by Klaus Hartmann. (discarding it saves a few cycles only)
+* A method to compute a ray-AABB intersection.
+* Original code by Andrew Woo, from "Graphics Gems", Academic Press, 1990
+* Optimized code by Pierre Terdiman, 2000 (~20-30% faster on my Celeron 500)
+* Epsilon value added by Klaus Hartmann. (discarding it saves a few cycles only)
 *
-*	Hence this version is faster as well as more robust than the original one.
+* Hence this version is faster as well as more robust than the original one.
 *
-*	Should work provided:
-*	1) the integer representation of 0.0f is 0x00000000
-*	2) the sign bit of the float is the most significant one
+* Should work provided:
+* 1) the integer representation of 0.0f is 0x00000000
+* 2) the sign bit of the float is the most significant one
 *
-*	Report bugs: p.terdiman@codercorner.com
+* Report bugs: p.terdiman@codercorner.com
 *
-*	\param		aabb		[in] the axis-aligned bounding box
-*	\param		origin		[in] ray origin
-*	\param		dir			[in] ray direction
-*	\param		coord		[out] impact coordinates
-*	\return		true if ray intersects AABB
+* \param    aabb    [in] the axis-aligned bounding box
+* \param    origin    [in] ray origin
+* \param    dir     [in] ray direction
+* \param    coord   [out] impact coordinates
+* \return   true if ray intersects AABB
 */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #define RAYAABB_EPSILON 0.00001f
@@ -4988,19 +4988,19 @@ bool fm_intersectRayAABB(const float MinB[3],const float MaxB[3],const float ori
   {
     if(origin[i] < MinB[i])
     {
-      coord[i]	= MinB[i];
-      Inside		= false;
+      coord[i]  = MinB[i];
+      Inside    = false;
 
       // Calculate T distances to candidate planes
-      if(IR(dir[i]))	MaxT[i] = (MinB[i] - origin[i]) / dir[i];
+      if(IR(dir[i]))  MaxT[i] = (MinB[i] - origin[i]) / dir[i];
     }
     else if(origin[i] > MaxB[i])
     {
-      coord[i]	= MaxB[i];
-      Inside		= false;
+      coord[i]  = MaxB[i];
+      Inside    = false;
 
       // Calculate T distances to candidate planes
-      if(IR(dir[i]))	MaxT[i] = (MaxB[i] - origin[i]) / dir[i];
+      if(IR(dir[i]))  MaxT[i] = (MaxB[i] - origin[i]) / dir[i];
     }
   }
 
@@ -5015,8 +5015,8 @@ bool fm_intersectRayAABB(const float MinB[3],const float MaxB[3],const float ori
 
   // Get largest of the maxT's for final choice of intersection
   unsigned int WhichPlane = 0;
-  if(MaxT[1] > MaxT[WhichPlane])	WhichPlane = 1;
-  if(MaxT[2] > MaxT[WhichPlane])	WhichPlane = 2;
+  if(MaxT[1] > MaxT[WhichPlane])  WhichPlane = 1;
+  if(MaxT[2] > MaxT[WhichPlane])  WhichPlane = 2;
 
   // Check final candidate actually inside box
   if(IR(MaxT[WhichPlane])&0x80000000) return false;
@@ -5027,13 +5027,13 @@ bool fm_intersectRayAABB(const float MinB[3],const float MaxB[3],const float ori
     {
       coord[i] = origin[i] + MaxT[WhichPlane] * dir[i];
 #ifdef RAYAABB_EPSILON
-      if(coord[i] < MinB[i] - RAYAABB_EPSILON || coord[i] > MaxB[i] + RAYAABB_EPSILON)	return false;
+      if(coord[i] < MinB[i] - RAYAABB_EPSILON || coord[i] > MaxB[i] + RAYAABB_EPSILON)  return false;
 #else
-      if(coord[i] < MinB[i] || coord[i] > MaxB[i])	return false;
+      if(coord[i] < MinB[i] || coord[i] > MaxB[i])  return false;
 #endif
     }
   }
-  return true;	// ray hits box
+  return true;  // ray hits box
 }
 
 bool fm_intersectLineSegmentAABB(const float bmin[3],const float bmax[3],const float p1[3],const float p2[3],float intersect[3])
@@ -5297,9 +5297,9 @@ public:
   {
     if (this != &p)
     {
-    	coord[0] = p.coord[0];
-    	coord[1] = p.coord[1];
-    	coord[2] = p.coord[2];
+      coord[0] = p.coord[0];
+      coord[1] = p.coord[1];
+      coord[2] = p.coord[2];
     }
     return *this;
   }
@@ -5390,7 +5390,7 @@ public:
       {
         mA[mSize][i] = 0;
         for (j=0; j<3; ++j)
-     	    mA[mSize][i] += mV[i][j] * mV[mSize][j];
+          mA[mSize][i] += mV[i][j] * mV[mSize][j];
         mA[mSize][i]*=(2/mZ[i]);
       }
 
@@ -5399,7 +5399,7 @@ public:
       {
         for (j=0; j<3; ++j)
         {
-  	      mV[mSize][j] -= mA[mSize][i]*mV[i][j];
+          mV[mSize][j] -= mA[mSize][i]*mV[i][j];
         }
       }
 
@@ -5568,9 +5568,9 @@ private:
       {
         if (mBestFitSphere.push(mPoints[j]))
         {
-      	  mtf_mb(j);
-       	  mBestFitSphere.pop();
-  	      move_to_front(j);
+          mtf_mb(j);
+          mBestFitSphere.pop();
+          move_to_front(j);
         }
       }
     }
